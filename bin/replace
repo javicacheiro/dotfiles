@@ -1,0 +1,23 @@
+#!/bin/ksh
+#
+# replace: replace first str1 in files with str2, in place
+#
+# source Kernighan&Pike "The UNIX programming environment"
+# copyist Anders Wallqvist 920130
+# modified P-O Astrand 920803
+#
+
+PATH=/bin:/usr/bin:$HOME/local/bin:/usr/local/bin
+
+case $# in
+0|1|2)  echo 'Usage: replace str1 str2 files' 1>&2;echo 'Poner los strings entre comillas simples. Para evitar que sean expandidos los metacaracteres antecederlos por \ (ej.  \* )'; exit 1
+esac
+
+left="$1"; right="$2"; shift; shift
+
+for i
+do
+      overwrite $i sed "s/$left/$right/g" $i
+done
+
+

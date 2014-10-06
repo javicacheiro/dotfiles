@@ -1,0 +1,43 @@
+##########
+# Prompt #
+##########
+export PS1="\h:\W> "
+
+###################
+# Command HISTORY #
+###################
+HISTSIZE=2000
+HISTFILESIZE=10000
+# don't add duplicate lines or lines starting with space
+HISTCONTROL=ignoreboth
+
+########
+# tmux #
+########
+alias tmux='TERM=xterm-256color tmux'
+# Disable Ctrl-S and Ctrl-Q on terminal so we can use them on other applications like vim
+# x2go does not like it so avoid doing it if we are not in an interactive bash session 
+if [[ $- == *i* ]]; then
+    stty stop ''
+    stty start ''
+    stty -ixon
+    stty -ixoff
+fi
+
+##############
+# Amazon EC2 #
+##############
+source ~/bash/amazon_ec2
+
+###########
+# General #
+###########
+export PATH=$PATH:~/local/bin:~/dotfiles/bin
+export EDITOR=/usr/bin/vim
+
+###########
+# Aliases #
+###########
+test -s ~/dotfiles/bash/bash_aliases && . ~/dotfiles/bash/bash_aliases || true
+# Private aliases (.gitignore)
+test -s ~/dotfiles/bash/bash_aliases_priv && . ~/dotfiles/bash/bash_aliases_priv || true

@@ -1,0 +1,12 @@
+https://github.com/tpope/vim-fugitive.git bundle/fugitive
+https://github.com/vim-scripts/TaskList.vim.git bundle/tasklist
+https://github.com/scrooloose/nerdcommenter.git bundle/nerdcommenter
+git://github.com/vim-scripts/supertab.git bundle/supertab
+https://github.com/kien/ctrlp.vim bundle/ctrlp
+git://github.com/Raimondi/delimitMate.git bundle/delimit-mate
+git://github.com/majutsushi/tagbar.git bundle/tagbar
+https://github.com/scrooloose/nerdtree.git bundle/nerdtree
+http://github.com/sjl/gundo.vim.git bundle/gundo
+https://github.com/msanders/snipmate.vim bundle/snipmate
+https://github.com/fholgado/minibufexpl.vim bundle/minbufexpl
+https://github.com/NickLaMuro/vimux bundle/vimux
