@@ -1,11 +1,2 @@
-alias rdesktop.jlc="rdesktop -g 1024x768 "
-alias rdesktop.hpsim="rdesktop -g 1280x960 84.21.168.198"
-alias rdesktop.cesgaofi="rdesktop -g 1280x960 cesgaofiv.cesga.es"
-alias rdesktop.emc="rdesktop -g 1280x960 193.144.34.57"
-alias gdrqcluster32="ssh javier@gdrqcluster32.usc.es"
-alias max="ssh javier@qfqcpc02.usc.es"
-
-alias psjlc='ps -AlFH'
-
-alias cdff='cd /mnt/store/liferay/plugins/liferay-plugins-sdk-6.2.0/portlets/accounting3-portlet/'
-
+alias psh='ps -AlFH'
+alias ll='ls -l'
