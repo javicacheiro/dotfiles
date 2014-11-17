@@ -1,7 +1,7 @@
 ##########
 # Prompt #
 ##########
-export PS1="\h:\W> "
+#export PS1="\h:\W> "
 
 ###################
 # Command HISTORY #

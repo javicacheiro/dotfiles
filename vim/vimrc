@@ -114,10 +114,13 @@ set t_Co=256 " 256 colors
 set background=dark
 "colorscheme grb256
 "colorscheme railscasts
-colorscheme solarized
+"colorscheme solarized
 "colorscheme jellybeans
 "let base16colorspace=256
 "colorscheme base16-railscasts
+"colorscheme monokai
+"colorscheme molokay
+colorscheme wombat256mod
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " STATUS LINE
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -126,9 +129,11 @@ colorscheme solarized
 " MISC KEY MAPS
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " command-t
-noremap <leader>o <Esc>:CommandT<CR>
-noremap <leader>O <Esc>:CommandTFlush<CR>
-noremap <leader>m <Esc>:CommandTBuffer<CR>
+"noremap <leader>o <Esc>:CommandT<CR>
+"noremap <leader>O <Esc>:CommandTFlush<CR>
+"noremap <leader>m <Esc>:CommandTBuffer<CR>
+" CtrlP
+noremap <leader>o <Esc>:CtrlP<CR>
 " gundo
 nnoremap <leader>u :GundoToggle<CR>
 " NERD Tree
@@ -138,9 +143,14 @@ let g:tagbar_usearrows = 1
 nnoremap <leader>tb :TagbarToggle<CR>
 " Select all
 map sa ggVG"+y
-" Markdown title
-nnoremap <leader>m- :t.\|s/./-/g\|noh<CR>
+" Markdown title h1
 nnoremap <leader>m= :t.\|s/./=/g\|noh<CR>
+nnoremap <c-_> :t.\|s/./=/g\|noh<CR>
+inoremap <c-_> <Esc>:t.\|s/./=/g\|noh<CR>o
+" Markdown title h2
+nnoremap <leader>m- :t.\|s/./-/g\|noh<CR>
+nnoremap <c-u> :t.\|s/./-/g\|noh<CR>
+inoremap <c-u> <Esc>:t.\|s/./-/g\|noh<CR>o
 " Map jj as <Esc> in insert mode
 inoremap jj <Esc>
 " Map C-s to save file if necessary (:update instead of :write)

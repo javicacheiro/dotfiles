@@ -1,2 +1,4 @@
 alias psh='ps -AlFH'
 alias ll='ls -l'
+alias lst='ls -ltr'
+alias lsa='ls -la'
