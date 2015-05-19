@@ -1,3 +1,10 @@
+
+#################################################
+# Original settings from the Linux distribution #
+# (move original .bashrc to .bashrc.system)     #
+#################################################
+test -s ~/.bashrc.system && . ~/.bashrc.system || true
+
 ##########
 # Prompt #
 ##########
@@ -29,10 +36,21 @@ fi
 ##############
 source ~/bash/amazon_ec2
 
+# Maven (manual install)
+export M2_HOME=/opt/apache-maven-3.2.5
+export M2=$M2_HOME/bin
+
+# SVN sistemas
+export SVNDIR=/opt/cesga/sistemas/svn/config/svg/
+
+# OpenNebula CLI
+export ONE_AUTH=~/.one/one_auth
+export ONE_XMLRPC=http://cloud.cesga.es:2633/RPC2
+
 ###########
 # General #
 ###########
-export PATH=$PATH:~/local/bin:~/dotfiles/bin
+export PATH=$PATH:~/local/bin:~/dotfiles/bin:$M2
 export EDITOR=/usr/bin/vim
 
 ###########

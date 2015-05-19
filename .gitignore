@@ -26,3 +26,12 @@ thunderbird/*
 # bash #
 ########
 bash/bash_aliases_priv
+########
+# etc  #
+########
+etc/*
+##############
+# local/bin  #
+##############
+local/bin/*
+local/copy*
