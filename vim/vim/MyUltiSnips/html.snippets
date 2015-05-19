@@ -1,0 +1,32 @@
+priority -50
+
+###########################################################################
+#                            Reveal   Snippets                            #
+###########################################################################
+
+############
+# Slides   #
+############
+
+snippet section "Slide" w
+<section>
+  <h2>${1:Title}</h2>
+  <p>
+    ${2:Content}
+  </p>
+</section>
+$0
+endsnippet
+
+snippet sectionl "Slide: List" w
+<section>
+  <h2>${1:Title}</h2>
+  <ul>
+    <li>$2</li>
+    <li>$3</li>
+    <li>$4</li>
+  </ul>
+</section>
+$0
+endsnippet
+# vim:ft=snippets:
