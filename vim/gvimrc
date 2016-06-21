@@ -10,9 +10,11 @@
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " FONT
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-set guifont=Inconsolata\ 12
+"set guifont=Inconsolata\ 12
 "set guifont=Andale\ Mono\ 12
 "set guifont=Ubuntu\ Mono\ 12
+"set guifont=Sauce\ Code\ Powerline\ Regular\ 12
+set guifont=Ubuntu\ Mono\ derivative\ Powerline\ 12
 "set guifont=DejaVu\ Sans\ Mono\ 10
 " Monaco: good for non-antialiased small sizes
 "set guifont=Monaco\ 10

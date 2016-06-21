@@ -144,6 +144,10 @@ let g:tagbar_usearrows = 1
 nnoremap <leader>tb :TagbarToggle<CR>
 " Select all
 map sa ggVG"+y
+" Enable YouCompleteMe
+nnoremap <leader>ac :let g:ycm_auto_trigger=1<CR>
+" Disable YouCompleteMe
+nnoremap <leader>noac :let g:ycm_auto_trigger=0<CR>
 " Markdown title h1
 nnoremap <leader>m= :t.\|s/./=/g\|noh<CR>
 nnoremap <c-_> :t.\|s/./=/g\|noh<CR>
@@ -152,6 +156,9 @@ inoremap <c-_> <Esc>:t.\|s/./=/g\|noh<CR>o
 nnoremap <leader>m- :t.\|s/./-/g\|noh<CR>
 nnoremap <c-u> :t.\|s/./-/g\|noh<CR>
 inoremap <c-u> <Esc>:t.\|s/./-/g\|noh<CR>o
+" Markdown code block
+nnoremap <c-v> o```<CR><Esc>
+inoremap <c-v> ```<CR>
 " Map jj as <Esc> in insert mode
 inoremap jj <Esc>
 " Map C-s to save file if necessary (:update instead of :write)
@@ -187,20 +194,6 @@ map <leader>l :w\|:silent !reload-chrome<cr>
 " Align selected lines
 vnoremap <leader>ib :!align<cr>
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" MULTIPURPOSE TAB KEY
-" Indent if we're at the beginning of a line. Else, do completion.
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-function! InsertTabWrapper()
-let col = col('.') - 1
-if !col || getline('.')[col - 1] !~ '\k'
-return "\<tab>"
-else
-return "\<c-p>"
-endif
-endfunction
-inoremap <tab> <c-r>=InsertTabWrapper()<cr>
-inoremap <s-tab> <c-n>
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " OPEN FILES IN DIRECTORY OF CURRENT FILE
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 cnoremap %% <C-R>=expand('%:h').'/'<cr>
@@ -219,18 +212,6 @@ redraw!
 endif
 endfunction
 map <leader>n :call RenameFile()<cr>
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" PROMOTE VARIABLE TO RSPEC LET
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-function! PromoteToLet()
-:normal! dd
-" :exec '?^\s*it\>'
-:normal! P
-:.s/\(\w\+\) = \(.*\)$/let(:\1) { \2 }/
-:normal ==
-endfunction
-:command! PromoteToLet :call PromoteToLet()
-:map <leader>p :PromoteToLet<cr>
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " EXTRACT VARIABLE (SKETCHY)
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -277,124 +258,6 @@ exec ':.s/\<' . @a . '\>/' . @b
 endfunction
 nnoremap <leader>ri :call InlineVariable()<cr>
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" MAPS TO JUMP TO SPECIFIC COMMAND-T TARGETS AND FILES
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-map <leader>gr :topleft :split config/routes.rb<cr>
-function! ShowRoutes()
-" Requires 'scratch' plugin
-:topleft 100 :split __Routes__
-" Make sure Vim doesn't write __Routes__ as a file
-:set buftype=nofile
-" Delete everything
-:normal 1GdG
-" Put routes output in buffer
-:0r! rake -s routes
-" Size window to number of lines (1 plus rake output length)
-:exec ":normal " . line("$") . _ "
-" Move cursor to bottom
-:normal 1GG
-" Delete empty trailing line
-:normal dd
-endfunction
-map <leader>gR :call ShowRoutes()<cr>
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" SWITCH BETWEEN TEST AND PRODUCTION CODE
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-function! OpenTestAlternate()
-let new_file = AlternateForCurrentFile()
-exec ':e ' . new_file
-endfunction
-function! AlternateForCurrentFile()
-let current_file = expand("%")
-let new_file = current_file
-let in_spec = match(current_file, '^spec/') != -1
-let going_to_spec = !in_spec
-let in_app = match(current_file, '\<controllers\>') != -1 || match(current_file, '\<models\>') != -1 || match(current_file, '\<views\>') != -1 || match(current_file, '\<helpers\>') != -1
-if going_to_spec
-if in_app
-let new_file = substitute(new_file, '^app/', '', '')
-end
-let new_file = substitute(new_file, '\.e\?rb$', '_spec.rb', '')
-let new_file = 'spec/' . new_file
-else
-let new_file = substitute(new_file, '_spec\.rb$', '.rb', '')
-let new_file = substitute(new_file, '^spec/', '', '')
-if in_app
-let new_file = 'app/' . new_file
-end
-endif
-return new_file
-endfunction
-nnoremap <leader>. :call OpenTestAlternate()<cr>
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" RUNNING TESTS
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-function! MapCR()
-nnoremap <cr> :call RunTestFile()<cr>
-endfunction
-call MapCR()
-nnoremap <leader>T :call RunNearestTest()<cr>
-nnoremap <leader>a :call RunTests('')<cr>
-nnoremap <leader>c :w\|:!script/features<cr>
-nnoremap <leader>w :w\|:!script/features --profile wip<cr>
-function! RunTestFile(...)
-if a:0
-let command_suffix = a:1
-else
-let command_suffix = ""
-endif
-" Run the tests for the previously-marked file.
-let in_test_file = match(expand("%"), '\(.feature\|_spec.rb\)$') != -1
-if in_test_file
-call SetTestFile()
-elseif !exists("t:grb_test_file")
-return
-end
-call RunTests(t:grb_test_file . command_suffix)
-endfunction
-function! RunNearestTest()
-let spec_line_number = line('.')
-call RunTestFile(":" . spec_line_number)
-endfunction
-function! SetTestFile()
-" Set the spec file that tests will be run for.
-let t:grb_test_file=@%
-endfunction
-function! RunTests(filename)
-" Write the file and run tests for the given filename
-if expand("%") != ""
-:w
-end
-if match(a:filename, '\.feature$') != -1
-exec ":!script/features " . a:filename
-else
-" First choice: project-specific test script
-if filereadable("script/test")
-exec ":!script/test " . a:filename
-" Fall back to the .test-commands pipe if available, assuming someone
-" is reading the other side and running the commands
-elseif filewritable(".test-commands")
-let cmd = 'rspec --color --format progress --require "~/lib/vim_rspec_formatter" --format VimFormatter --out tmp/quickfix'
-exec ":!echo " . cmd . " " . a:filename . " > .test-commands"
-" Write an empty string to block until the command completes
-sleep 100m " milliseconds
-:!echo > .test-commands
-redraw!
-" Fall back to a blocking test run with Bundler
-elseif filereadable("Gemfile")
-exec ":!bundle exec rspec --color " . a:filename
-" Fall back to a normal blocking test run
-else
-exec ":!rspec --color " . a:filename
-end
-end
-endfunction
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Md5 COMMAND
-" Show the MD5 of the current buffer
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-command! -range Md5 :echo system('echo '.shellescape(join(getline(<line1>, <line2>), '\n')) . '| md5')
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " OpenChangedFiles COMMAND
 " Open a split for each dirty file in git
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -425,102 +288,61 @@ command! GdiffInTab tabedit %|vsplit|Gdiff
 nnoremap <leader>d :GdiffInTab<cr>
 nnoremap <leader>D :tabclose<cr>
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Test quickfix list management
-"
-" If the tests write a tmp/quickfix file, these mappings will navigate through
-" it
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-function! GetBufferList()
-redir =>buflist
-silent! ls
-redir END
-return buflist
-endfunction
-function! BufferIsOpen(bufname)
-let buflist = GetBufferList()
-for bufnum in map(filter(split(buflist, '\n'), 'v:val =~ "'.a:bufname.'"'), 'str2nr(matchstr(v:val, "\\d\\+"))')
-if bufwinnr(bufnum) != -1
-return 1
-endif
-endfor
-return 0
-endfunction
-function! ToggleQuickfix()
-if BufferIsOpen("Quickfix List")
-cclose
-else
-call OpenQuickfix()
-endif
-endfunction
-function! OpenQuickfix()
-cgetfile tmp/quickfix
-topleft cwindow
-if &ft == "qf"
-cc
-endif
-endfunction
-nnoremap <leader>q :call ToggleQuickfix()<cr>
-nnoremap <leader>Q :cc<cr>
-nnoremap <leader>j :cnext<cr>
-nnoremap <leader>k :cprev<cr>
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" RemoveFancyCharacters COMMAND
-" Remove smart quotes, etc.
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-function! RemoveFancyCharacters()
-let typo = {}
-let typo["“"] = '"'
-let typo["”"] = '"'
-let typo["‘"] = "'"
-let typo["’"] = "'"
-let typo["–"] = '--'
-let typo["—"] = '---'
-let typo["…"] = '...'
-:exe ":%s/".join(keys(typo), '\|').'/\=typo[submatch(0)]/ge'
-endfunction
-command! RemoveFancyCharacters :call RemoveFancyCharacters()
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Selecta Mappings
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Run a given vim command on the results of fuzzy selecting from a given shell
-" command. See usage below.
-function! SelectaCommand(choice_command, selecta_args, vim_command)
-try
-silent let selection = system(a:choice_command . " | selecta " . a:selecta_args)
-catch /Vim:Interrupt/
-" Swallow the ^C so that the redraw below happens; otherwise there will be
-" leftovers from selecta on the screen
-redraw!
-return
-endtry
-redraw!
-exec a:vim_command . " " . selection
-endfunction
-function! SelectaFile(path)
-call SelectaCommand("find " . a:path . "/* -type f", "", ":e")
-endfunction
-nnoremap <leader>f :call SelectaFile(".")<cr>
-nnoremap <leader>gv :call SelectaFile("app/views")<cr>
-nnoremap <leader>gc :call SelectaFile("app/controllers")<cr>
-nnoremap <leader>gm :call SelectaFile("app/models")<cr>
-nnoremap <leader>gh :call SelectaFile("app/helpers")<cr>
-nnoremap <leader>gl :call SelectaFile("lib")<cr>
-nnoremap <leader>gp :call SelectaFile("public")<cr>
-nnoremap <leader>gs :call SelectaFile("public/stylesheets")<cr>
-nnoremap <leader>gf :call SelectaFile("features")<cr>
-function! SelectaIdentifier()
-" Yank the word under the cursor into the z register
-normal "zyiw
-" Fuzzy match files in the current directory, starting with the word under
-" the cursor
-call SelectaCommand("find * -type f", "-s " . @z, ":e")
-endfunction
-nnoremap <c-g> :call SelectaIdentifier()<cr>
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" SuperTab
+" UltiSnips
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Trigger configuration. Do not use <tab> if you use https://github.com/Valloric/YouCompleteMe.
 let g:UltiSnipsExpandTrigger="<c-k>"
 let g:UltiSnipsJumpForwardTrigger="<c-k>"
 let g:UltiSnipsJumpBackwardTrigger="<s-c-j>"
 let g:UltiSnipsSnippetDirectories=["bundle/vim-snippets/UltiSnips","MyUltiSnips"]
+" By default disable autocompletion (YouCompleteMe)
+" use <leader>ac to enable it on demand.
+let g:ycm_auto_trigger=0
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" syntastic: newbie settings
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+set statusline+=%#warningmsg#
+set statusline+=%{SyntasticStatuslineFlag()}
+set statusline+=%*
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_auto_loc_list = 2
+let g:syntastic_check_on_open = 1
+let g:syntastic_check_on_wq = 0
+"let g:syntastic_python_checker_args = '--ignore="E501,E302,E261,E701,E241,E126,E127,E128,W801"'
+"let g:syntastic_python_checker_args = '--ignore="E501"'
+"The PEP8 E501 line too long error comes from flake8, not pylint.
+"let g:syntastic_python_flake8_args ='--ignore="E501"'
+let g:syntastic_python_flake8_args ='--max-line-length=100'
+" http://stackoverflow.com/questions/20030603/vim-syntastic-how-to-disable-the-checker
+"let g:syntastic_mode_map = { 'mode': 'passive', 'active_filetypes': [], 'passive_filetypes': [] }
+let g:syntastic_mode_map = { 'mode': 'passive', 'active_filetypes': ["python"], 'passive_filetypes': [] }
+nnoremap <leader>E :SyntasticToggleMode<CR> :SyntasticCheck<CR> :Errors<CR> h<CR>
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" vim-airline
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"let g:airline_powerline_fonts=1
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" powerline
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+set rtp+=$HOME/.local/lib/python2.7/site-packages/powerline/bindings/vim/
+" Always show statusline
+set laststatus=2
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" fugitive git bindings
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+nnoremap <leader>ga :Git add %:p<CR><CR>
+nnoremap <leader>gs :Gstatus<CR>
+nnoremap <leader>gc :Gcommit -v -q<CR>
+nnoremap <leader>gt :Gcommit -v -q %:p<CR>
+nnoremap <leader>gd :Gdiff<CR>
+nnoremap <leader>ge :Gedit<CR>
+nnoremap <leader>gr :Gread<CR>
+nnoremap <leader>gw :Gwrite<CR><CR>
+nnoremap <leader>gl :silent! Glog<CR>:bot copen<CR>
+nnoremap <leader>gp :Ggrep<Space>
+nnoremap <leader>gm :Gmove<Space>
+nnoremap <leader>gb :Git branch<Space>
+nnoremap <leader>go :Git checkout<Space>
+nnoremap <leader>gps :Dispatch! git push<CR>
+nnoremap <leader>gpl :Dispatch! git pull<CR>

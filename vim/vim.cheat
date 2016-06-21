@@ -1,0 +1,78 @@
+Movement
+--------
+h l k j    character left, right, up, down
+w b        word right/left
+e ge       end of word right/left
+{ }        paragraph prev/next
+( )        sentence prev/next
+0 $        line begin/end
+nG ngg     line n, default last/first
+
+Marks
+-----
+mc          mark current position with mark c [a..Z]
+'c 'C       goto mark c current/any file
+
+Multiple files
+--------------
+:tabedit file     open file in new tab
+
+Split
+-----
+^Ws :split file     horizontally split window and open file (by default current file)
+^Wv :vsplit file    vertically split window and open file (by default current file)
+^Wj ^Wk     move to window above/below
+^W+ ^W- ^W< ^W>     change size of split upwards/downwards/left/right
+
+Spell checking
+--------------
+:set spell spelllang=en    activate spellcheck
+]s                         next misspelled word
+]=                         suggest corrections
+
+Normal mode (aka command mode)
+------------------------------
+<Esc> ^C <Meta>j jj        enter normal mode
+^O                         enter normal mode to execute only one command
+
+Visual mode
+-----------
+v V ^V       start/stop highlighting characters/lines/blocks
+gv           highlight previous selection
+ip           select inner paragraph
+ab aB        select a block () or a block {}
+n> n<        indent/unindent n levels
+
+Copy/Paste/Delete
+-----------------
+yy Y         yank current line into register
+p P          put register after/before cursor
+gp gP        and leave cursor after new text
+:<range>copy<address>.         copy the lines given by range below address
+:t                             synonym for copy
+x            delete text
+
+Macros
+------
+qq           start recording macro in register q
+n@q          execute macro q n times
+
+Undo
+----
+u            undo
+. ^R         redo
+
+Search/Replace
+--------------
+/ ?     search forward/backward
+n N     repeat search forward/backward
+:<range>s/f/t/x    substitute f by t in range (x values: g all, I case sensitive, c confirm)
+:set hlsearch      hightlight search
+:noh    stop highlighting search
+ 
+Save/Quit
+---------
+:w
+:x
+^Ow  from insert mode
+^S   save (custom shortcut)

@@ -46,12 +46,33 @@
 [submodule "vim/vim/bundle/vim-indent-guides"]
 	path = vim/vim/bundle/vim-indent-guides
 	url = git://github.com/nathanaelkane/vim-indent-guides.git
-[submodule "vim/vim/bundle/youcompeteme"]
-	path = vim/vim/bundle/youcompeteme
-	url = https://github.com/Valloric/YouCompleteMe.git
 [submodule "vim/vim/bundle/ultisnips"]
 	path = vim/vim/bundle/ultisnips
 	url = https://github.com/SirVer/ultisnips
 [submodule "vim/vim/bundle/vim-snippets"]
 	path = vim/vim/bundle/vim-snippets
 	url = https://github.com/honza/vim-snippets.git
+[submodule "vim/vim/bundle/YouCompleteMe"]
+	path = vim/vim/bundle/YouCompleteMe
+	url = https://github.com/Valloric/YouCompleteMe.git
+[submodule "vim/vim/bundle/syntastic"]
+	path = vim/vim/bundle/syntastic
+	url = https://github.com/scrooloose/syntastic.git
+[submodule "vim/vim/bundle/vim-airline"]
+	path = vim/vim/bundle/vim-airline
+	url = https://github.com/bling/vim-airline
+[submodule "vim/vim/bundle/vim-unimpaired"]
+	path = vim/vim/bundle/vim-unimpaired
+	url = git://github.com/tpope/vim-unimpaired.git
+[submodule "vim/vim/bundle/vim-repeat"]
+	path = vim/vim/bundle/vim-repeat
+	url = git://github.com/tpope/vim-repeat.git
+[submodule "vim/vim/bundle/salt-vim"]
+	path = vim/vim/bundle/salt-vim
+	url = https://github.com/saltstack/salt-vim.git
+[submodule "vim/vim/bundle/vim-jinja2-syntax"]
+	path = vim/vim/bundle/vim-jinja2-syntax
+	url = https://github.com/Glench/Vim-Jinja2-Syntax.git
+[submodule "vim/vim/bundle/python-mode"]
+	path = vim/vim/bundle/python-mode
+	url = https://github.com/klen/python-mode.git
