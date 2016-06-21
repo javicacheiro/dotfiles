@@ -122,6 +122,9 @@ set background=dark
 "colorscheme monokai
 "colorscheme molokay
 colorscheme wombat256mod
+set background=dark
+" color to use for the highlight color column used by pymode
+highlight ColorColumn ctermbg=8
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " STATUS LINE
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""

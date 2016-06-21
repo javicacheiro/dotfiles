@@ -405,7 +405,7 @@ General Programming:
 
 Python:
 
- * pyhton-mode: https://github.com/klen/python-mode.git bundle/pthon-mode
+ * python-mode: https://github.com/klen/python-mode.git bundle/pthon-mode
 
 HTML & Javascript:
  * vim-javascript: https://github.com/pangloss/vim-javascript.git bundle/vim-javascript
@@ -437,6 +437,23 @@ Not used anymore:
 
 Plugin Specific Information
 ===========================
+python-mode
+-----------
+Set colorcolumn color to gray instead of read in console mode (in gui it does it correctly):
+
+    highlight ColorColumn ctermbg=8
+
+Actually python mode uses colorcolumn built-in functionality.
+You can move the colorcolumn position:
+
+    set colorcolumn=80
+
+For GVim it is done using:
+
+    highlight ColorColumn guibg=snow
+
+[chart of vim colornames](https://codeyarns.com/2011/07/29/vim-chart-of-color-names/)
+
 vim-unimpaired
 --------------
 https://github.com/tpope/vim-unimpaired/blob/master/doc/unimpaired.txt
