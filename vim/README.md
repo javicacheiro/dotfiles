@@ -441,7 +441,7 @@ python-mode
 -----------
 Set colorcolumn color to gray instead of read in console mode (in gui it does it correctly):
 
-    highlight ColorColumn ctermbg=8
+    highlight ColorColumn ctermbg=234
 
 Actually python mode uses colorcolumn built-in functionality.
 You can move the colorcolumn position:
@@ -452,7 +452,22 @@ For GVim it is done using:
 
     highlight ColorColumn guibg=snow
 
+Color to use for the highlight column from xterm 256 color chart:
+- 235: lighter grey
+- 234: same grey as background
+- 233: darker grey
+
+[Xterm color chart](https://upload.wikimedia.org/wikipedia/en/1/15/Xterm_256color_chart.svg)
 [chart of vim colornames](https://codeyarns.com/2011/07/29/vim-chart-of-color-names/)
+
+
+Do not automatically open quickfix window:
+
+    let g:pymode_lint_cwindow = 0
+
+Only autocomplete on `<c-space>`:
+
+    let g:pymode_rope_complete_on_dot = 0
 
 vim-unimpaired
 --------------

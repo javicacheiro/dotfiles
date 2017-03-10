@@ -18,6 +18,11 @@ HISTFILESIZE=10000
 # don't add duplicate lines or lines starting with space
 HISTCONTROL=ignoreboth
 
+##########
+# CDPATH #
+##########
+CDPATH=.:$HOME/Dropbox/home_common/Active:$HOME/home_common/Active:$HOME/home_common/Reference:$HOME/Dropbox/home_common/Reference
+
 ########
 # tmux #
 ########
@@ -36,6 +41,9 @@ fi
 ##############
 source ~/bash/amazon_ec2
 
+# Hashicorp Atlas
+source ~/bash/hashicorp_atlas
+
 # Maven (manual install)
 export M2_HOME=/opt/apache-maven-3.2.5
 export M2=$M2_HOME/bin
@@ -50,7 +58,7 @@ export ONE_XMLRPC=http://cloud.cesga.es:2633/RPC2
 ###########
 # General #
 ###########
-export PATH=$PATH:~/local/bin:~/dotfiles/bin:$M2
+export PATH=$PATH:~/local/bin:~/dotfiles/bin:~/.local/bin:$M2
 export EDITOR=/usr/bin/vim
 
 ###########
@@ -59,3 +67,18 @@ export EDITOR=/usr/bin/vim
 test -s ~/dotfiles/bash/bash_aliases && . ~/dotfiles/bash/bash_aliases || true
 # Private aliases (.gitignore)
 test -s ~/dotfiles/bash/bash_aliases_priv && . ~/dotfiles/bash/bash_aliases_priv || true
+
+# spark
+#export SPARK_HOME=/home/jlopez/home_common/Reference/cursos/curso_Spark_CITIC/spark-1.3.0-bin-hadoop2.4
+export SPARK_HOME=/home/jlopez/home_common/Reference/cursos/Scalable_Machine_Learning_Edx/sparkvagrant/spark-1.4.0
+
+# powerline
+if [ -f ~/.local/lib/python2.7/site-packages/powerline/bindings/bash/powerline.sh ]; then
+    source ~/.local/lib/python2.7/site-packages/powerline/bindings/bash/powerline.sh
+fi
+
+# Python do not generate .pyc files
+export PYTHONDONTWRITEBYTECODE=1
+
+# added by Anaconda2 4.1.1 installer
+export PATH="/home/jlopez/anaconda2/bin:$PATH"
