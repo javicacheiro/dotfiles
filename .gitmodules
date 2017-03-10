@@ -52,9 +52,6 @@
 [submodule "vim/vim/bundle/vim-snippets"]
 	path = vim/vim/bundle/vim-snippets
 	url = https://github.com/honza/vim-snippets.git
-[submodule "vim/vim/bundle/YouCompleteMe"]
-	path = vim/vim/bundle/YouCompleteMe
-	url = https://github.com/Valloric/YouCompleteMe.git
 [submodule "vim/vim/bundle/syntastic"]
 	path = vim/vim/bundle/syntastic
 	url = https://github.com/scrooloose/syntastic.git
@@ -76,3 +73,6 @@
 [submodule "vim/vim/bundle/python-mode"]
 	path = vim/vim/bundle/python-mode
 	url = https://github.com/klen/python-mode.git
+[submodule "vim/vim/bundle/vim-scala"]
+	path = vim/vim/bundle/vim-scala
+	url = https://github.com/derekwyatt/vim-scala.git
