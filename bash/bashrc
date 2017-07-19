@@ -55,6 +55,9 @@ export SVNDIR=/opt/cesga/sistemas/svn/config/svg/
 export ONE_AUTH=~/.one/one_auth
 export ONE_XMLRPC=http://cloud.cesga.es:2633/RPC2
 
+# RT
+source ~/bash/rt
+
 ###########
 # General #
 ###########
