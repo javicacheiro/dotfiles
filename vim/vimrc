@@ -92,6 +92,12 @@ autocmd BufReadPost *
 autocmd FileType ruby,haml,eruby,yaml,html,javascript,sass,cucumber set ai sw=2 sts=2 et
 "for python with four spaces
 autocmd FileType python set sw=4 sts=4 et
+" Configure matchit so that it goes from opening tag to closing tag in html
+" NOTE: added directly to the list of plugins in the plugin directory
+" http://stackoverflow.com/questions/7281459/matchit-not-working
+"set nocompatible
+"filetype plugin on
+"au FileType html,eruby,rb,css,js,xml runtime! macros/matchit.vim
 autocmd! BufRead,BufNewFile *.sass setfiletype sass
 autocmd BufRead *.mkd set ai formatoptions=tcroqn2 comments=n:&gt;
 autocmd BufRead *.markdown set ai formatoptions=tcroqn2 comments=n:&gt;
@@ -123,12 +129,23 @@ set background=dark
 "colorscheme molokay
 colorscheme wombat256mod
 set background=dark
-" color to use for the highlight color column used by pymode
-highlight ColorColumn ctermbg=8
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " STATUS LINE
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 :set statusline=%<%f\ (%{&ft})\ %-4(%m%)%=%-19(%3l,%02c%03V%)
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" PYTHON-MODE
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" color to use for the highlight color column used by pymode
+" 235: lighter grey
+" 234: same grey as background
+" 233: darker grey
+" https://upload.wikimedia.org/wikipedia/en/1/15/Xterm_256color_chart.svg
+highlight ColorColumn ctermbg=234
+" do not automatically open quickfix window
+let g:pymode_lint_cwindow = 0
+" only autocomplete on <c-space>
+let g:pymode_rope_complete_on_dot = 0
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " MISC KEY MAPS
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -160,8 +177,11 @@ nnoremap <leader>m- :t.\|s/./-/g\|noh<CR>
 nnoremap <c-u> :t.\|s/./-/g\|noh<CR>
 inoremap <c-u> <Esc>:t.\|s/./-/g\|noh<CR>o
 " Markdown code block
-nnoremap <c-v> o```<CR><Esc>
-inoremap <c-v> ```<CR>
+nnoremap <leader>v o```<Esc>
+inoremap <leader>v ```<CR>
+" Revealjs new slide
+nnoremap <leader>ns o<section><cr><h2></h2><cr><ul><cr><li></li><cr></ul><cr><bs></section><cr>
+inoremap <leader>ns <section><cr><h2></h2><cr><ul><cr><li></li><cr></ul><cr><bs></section><cr>
 " Map jj as <Esc> in insert mode
 inoremap jj <Esc>
 " Map C-s to save file if necessary (:update instead of :write)
@@ -201,7 +221,7 @@ vnoremap <leader>ib :!align<cr>
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 cnoremap %% <C-R>=expand('%:h').'/'<cr>
 map <leader>e :edit %%
-map <leader>v :view %%
+"map <leader>v :view %%
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " RENAME CURRENT FILE
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -316,9 +336,12 @@ let g:syntastic_check_on_wq = 0
 "The PEP8 E501 line too long error comes from flake8, not pylint.
 "let g:syntastic_python_flake8_args ='--ignore="E501"'
 let g:syntastic_python_flake8_args ='--max-line-length=100'
+let g:syntastic_javascript_checkers = ['jshint']
 " http://stackoverflow.com/questions/20030603/vim-syntastic-how-to-disable-the-checker
 "let g:syntastic_mode_map = { 'mode': 'passive', 'active_filetypes': [], 'passive_filetypes': [] }
-let g:syntastic_mode_map = { 'mode': 'passive', 'active_filetypes': ["python"], 'passive_filetypes': [] }
+" We do not need syntastic with python because we are using the package python-mode
+"let g:syntastic_mode_map = { 'mode': 'passive', 'active_filetypes': ["python"], 'passive_filetypes': [] }
+let g:syntastic_mode_map = { 'mode': 'passive', 'active_filetypes': ["javascript"], 'passive_filetypes': [] }
 nnoremap <leader>E :SyntasticToggleMode<CR> :SyntasticCheck<CR> :Errors<CR> h<CR>
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " vim-airline
