@@ -146,6 +146,14 @@ highlight ColorColumn ctermbg=234
 let g:pymode_lint_cwindow = 0
 " only autocomplete on <c-space>
 let g:pymode_rope_complete_on_dot = 0
+" disable syntax checking because we use syntastic (see below)
+"let g:pymode_lint = 0
+" enable pymode lint on the fly
+let g:pymode_lint_on_fly = 1
+" Check code on every save even if file has been modified
+"let g:pymode_lint_unmodified = 1
+" Keyboard shortcut to check code
+nnoremap <leader>L :PymodeLint<CR>
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " MISC KEY MAPS
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -342,6 +350,7 @@ let g:syntastic_javascript_checkers = ['jshint']
 " We do not need syntastic with python because we are using the package python-mode
 "let g:syntastic_mode_map = { 'mode': 'passive', 'active_filetypes': ["python"], 'passive_filetypes': [] }
 let g:syntastic_mode_map = { 'mode': 'passive', 'active_filetypes': ["javascript"], 'passive_filetypes': [] }
+"let g:syntastic_mode_map = { 'mode': 'passive', 'active_filetypes': ["javascript", "python"], 'passive_filetypes': [] }
 nnoremap <leader>E :SyntasticToggleMode<CR> :SyntasticCheck<CR> :Errors<CR> h<CR>
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " vim-airline
