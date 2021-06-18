@@ -5,3 +5,5 @@ alias lsa='ls -la'
 alias ..='cd ..'
 alias ...='cd ../../'
 alias ....='cd ../../../'
+alias noc="egrep -v '(^#|^$)'"
+abbrev() { a='[0-9a-fA-F]' b=$a$a c=$b$b; sed "s/$b-$c-$c-$c-$c$c$c//g"; }
